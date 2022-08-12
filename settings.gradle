@@ -1,0 +1,2 @@
+rootProject.name = "ToDoMate-Android"
+include ':app'
