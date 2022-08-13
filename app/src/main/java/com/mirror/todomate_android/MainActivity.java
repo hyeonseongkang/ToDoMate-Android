@@ -1,5 +1,6 @@
 package com.mirror.todomate_android;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -9,101 +10,42 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener{
+public class MainActivity extends AppCompatActivity{
 
-    private TextView monthYearText;
-    private RecyclerView calendarRecyclerView;
-    private LocalDate selectedDate;
-    private Button previousMonth, nextMonth;
+    private CalendarView calendarView;
+    private TextView today;
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initViews();
-        selectedDate = LocalDate.now();
-        setMonthView();
+        calendarView = (CalendarView) findViewById(R.id.calendarView);
+        today = (TextView) findViewById(R.id.today);
 
-        previousMonth.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectedDate = selectedDate.minusMonths(1);
-                setMonthView();
-            }
-        });
+        DateFormat format = new SimpleDateFormat("yyyy MM dd");
+        Date date = new Date(calendarView.getDate());
+        today.setText(format.format(date));
 
-        nextMonth.setOnClickListener(new View.OnClickListener() {
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
-            public void onClick(View view) {
-                selectedDate = selectedDate.plusMonths(1);
-                setMonthView();
+            public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
+                String day = i + "년 " + (i1 + 1) + "월 " + i2 + "일";
+                today.setText(day);
             }
         });
     }
-
-    private void initViews() {
-        calendarRecyclerView = findViewById(R.id.calendar_recyclerview);
-        monthYearText = findViewById(R.id.month_year);
-        previousMonth = findViewById(R.id.previous_month);
-        nextMonth = findViewById(R.id.next_month);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void setMonthView() {
-        monthYearText.setText(monthYearFromDate(selectedDate));
-        List<String> daysInMonth = daysInMonthArray(selectedDate);
-
-        CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 7);
-        calendarRecyclerView.setLayoutManager(layoutManager);
-        calendarRecyclerView.setAdapter(calendarAdapter);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private List<String> daysInMonthArray(LocalDate date) {
-        List<String> daysInMonthArray = new ArrayList<>();
-        YearMonth yearMonth = YearMonth.from(date);
-
-        int daysInMonth = yearMonth.lengthOfMonth();
-
-        LocalDate firstOfMonth = selectedDate.withDayOfMonth(1);
-        int dayOfWeek = firstOfMonth.getDayOfWeek().getValue();
-
-        for (int i = 1; i <= 42; i++) {
-            if(i <= dayOfWeek || i > daysInMonth + dayOfWeek) {
-                daysInMonthArray.add("");
-            } else {
-                daysInMonthArray.add(String.valueOf(i - dayOfWeek));
-            }
-        }
-        return daysInMonthArray;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private String monthYearFromDate(LocalDate date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MMMM");
-        return date.format(formatter);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    @Override
-    public void onItemClick(int position, String dayText) {
-        if (!dayText.equals("")) {
-            String message = monthYearFromDate(selectedDate) + " " + dayText + "일";
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
 }
