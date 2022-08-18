@@ -21,4 +21,8 @@ public class TodoListViewModel extends AndroidViewModel {
         repository = new TodoListRepository(application);
         allTodos = repository.getAllTodos();
     }
+
+    public void insertTodo(Todo todo) { repository.insertTodo(todo);}
+
+    public LiveData<List<Todo>> getAllTodos() { return allTodos; }
 }
