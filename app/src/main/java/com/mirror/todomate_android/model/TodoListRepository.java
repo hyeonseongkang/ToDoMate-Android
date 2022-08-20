@@ -44,6 +44,12 @@ public class TodoListRepository {
         myRef.child(id).child(date).child(key).setValue(todo);
     }
 
+    public void deleteTodo(String id, String date, Todo todo, int position) {
+        myRef.child(id).child(date).child(todo.getKey()).removeValue();
+        todos.remove(position);
+        allTodos.setValue(todos);
+    }
+
     public void getTodos(String id, String date) {
         myRef.child(id).child(date).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -52,8 +58,8 @@ public class TodoListRepository {
                 for (DataSnapshot snapshot1: snapshot.getChildren()) {
                     Todo todo = snapshot1.getValue(Todo.class);
                     todos.add(todo);
-                    Log.d(TAG, todo.getEmail());
-                    Log.d(TAG, todo.getKey());
+                    //Log.d(TAG, todo.getEmail());
+                    //Log.d(TAG, todo.getKey());
                 }
                 allTodos.setValue(todos);
             }

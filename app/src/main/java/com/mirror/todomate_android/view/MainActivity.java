@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +18,8 @@ import com.mirror.todomate_android.classes.Todo;
 import com.mirror.todomate_android.databinding.ActivityMainBinding;
 import com.mirror.todomate_android.viewmodel.LoginViewModel;
 import com.mirror.todomate_android.viewmodel.TodoListViewModel;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -63,7 +67,6 @@ public class MainActivity extends AppCompatActivity{
         loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
         loginViewModel.loginCheck();
         user = loginViewModel.getUser().getValue();
-        Log.d(TAG, user.getEmail() + " !!!!! " + user.getUid());
 
 
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -72,6 +75,20 @@ public class MainActivity extends AppCompatActivity{
 
         todoListViewModel.getTodos(user.getUid(), format.format(date));
         Log.d(TAG, format.format(date));
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull @NotNull RecyclerView recyclerView, @NonNull @NotNull RecyclerView.ViewHolder viewHolder, @NonNull @NotNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull @NotNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                Todo todo = todoAdapter.getTodoAt(viewHolder.getAdapterPosition());
+                todoListViewModel.deleteTodo(user.getUid(), todo.getDate(), todo, position);
+            }
+        }).attachToRecyclerView(binding.mainRecyclerView);
 
         binding.calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
