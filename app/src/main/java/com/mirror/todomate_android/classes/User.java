@@ -1,4 +1,4 @@
-package com.mirror.todomate_android;
+package com.mirror.todomate_android.classes;
 
 public class User {
     private String email;

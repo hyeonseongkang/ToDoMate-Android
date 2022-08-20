@@ -1,20 +1,15 @@
 package com.mirror.todomate_android.view;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.mirror.todomate_android.R;
-import com.mirror.todomate_android.User;
+import com.mirror.todomate_android.classes.User;
 import com.mirror.todomate_android.databinding.ActivityLoginBinding;
 import com.mirror.todomate_android.viewmodel.LoginViewModel;
-
-import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
     public static final String TAG = "LoginActivity";

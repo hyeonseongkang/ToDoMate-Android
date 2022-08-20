@@ -5,15 +5,20 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.mirror.todomate_android.User;
+import com.mirror.todomate_android.classes.Todo;
+import com.mirror.todomate_android.classes.User;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 
 public class LoginRepository {
@@ -23,11 +28,15 @@ public class LoginRepository {
     private Application application;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
+    private MutableLiveData<FirebaseUser> userData;
 
     public LoginRepository(Application application) {
         this.application = application;
         mAuth = FirebaseAuth.getInstance();
+        userData = new MutableLiveData<>();
     }
+
+    public LiveData<FirebaseUser> getUser() {return userData;}
 
     public void login(User user) {
         mAuth.signInWithEmailAndPassword(user.getEmail(), user.getPassword())
@@ -75,6 +84,7 @@ public class LoginRepository {
     public void loginCheck() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
+            userData.setValue(currentUser);
             Log.d(TAG, "로그인 돼있음");
         } else {
             Log.d(TAG, "로그인 안돼있음");

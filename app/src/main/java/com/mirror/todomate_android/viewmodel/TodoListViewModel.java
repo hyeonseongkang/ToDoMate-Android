@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.mirror.todomate_android.Todo;
+import com.mirror.todomate_android.classes.Todo;
 import com.mirror.todomate_android.model.TodoListRepository;
 
 import java.util.List;
@@ -22,7 +22,11 @@ public class TodoListViewModel extends AndroidViewModel {
         allTodos = repository.getAllTodos();
     }
 
-    public void insertTodo(Todo todo) { repository.insertTodo(todo);}
+    public void insertTodo(String id, String date, Todo todo) { repository.insertTodo(id, date, todo);}
+
+    public void getTodos(String id, String date) {
+        repository.getTodos(id, date);
+    }
 
     public LiveData<List<Todo>> getAllTodos() { return allTodos; }
 }
