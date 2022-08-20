@@ -52,7 +52,7 @@ public class TodoListRepository {
                 for (DataSnapshot snapshot1: snapshot.getChildren()) {
                     Todo todo = snapshot1.getValue(Todo.class);
                     todos.add(todo);
-                    Log.d(TAG, todo.getNickName());
+                    Log.d(TAG, todo.getEmail());
                     Log.d(TAG, todo.getKey());
                 }
                 allTodos.setValue(todos);

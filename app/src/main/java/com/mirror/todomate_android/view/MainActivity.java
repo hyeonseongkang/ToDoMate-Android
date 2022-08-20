@@ -4,12 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.CalendarView;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.mirror.todomate_android.adapter.TodoAdapter;
 import com.mirror.todomate_android.classes.Todo;
 import com.mirror.todomate_android.databinding.ActivityMainBinding;
 import com.mirror.todomate_android.viewmodel.LoginViewModel;
@@ -36,22 +38,32 @@ public class MainActivity extends AppCompatActivity{
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        binding.mainRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.mainRecyclerView.setHasFixedSize(true);
+
+        TodoAdapter todoAdapter = new TodoAdapter();
+        binding.mainRecyclerView.setAdapter(todoAdapter);
+
+        todoAdapter.setOnItemClickListener(new TodoAdapter.onItemClickListener() {
+            @Override
+            public void onItemClick(Todo todo) {
+                Log.d("TODO CLICK", todo.getEmail());
+            }
+        });
+
         todoListViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(TodoListViewModel.class);
         todoListViewModel.getAllTodos().observe(this, new Observer<List<Todo>>() {
             @Override
             public void onChanged(List<Todo> todos) {
-                for (Todo todo: todos) {
-                    Log.d(TAG, todo.getNickName());
-                    Log.d(TAG, todo.getKey());
-                }
+                todoAdapter.setTodos(todos);
             }
         });
+
 
         loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
         loginViewModel.loginCheck();
         user = loginViewModel.getUser().getValue();
         Log.d(TAG, user.getEmail() + " !!!!! " + user.getUid());
-
 
 
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");

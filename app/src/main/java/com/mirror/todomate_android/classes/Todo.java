@@ -2,15 +2,15 @@ package com.mirror.todomate_android.classes;
 
 public class Todo {
     private String key;
-    private String nickName;
+    private String email;
     private String date;
     private String content;
 
     public Todo() {}
 
-    public Todo(String key, String nickName, String date, String content) {
+    public Todo(String key, String email, String date, String content) {
         this.key = key;
-        this.nickName = nickName;
+        this.email = email;
         this.date = date;
         this.content = content;
     }
@@ -23,8 +23,8 @@ public class Todo {
         return key;
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getEmail() {
+        return email;
     }
 
     public String getDate() {
