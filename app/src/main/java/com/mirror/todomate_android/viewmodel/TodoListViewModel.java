@@ -24,6 +24,10 @@ public class TodoListViewModel extends AndroidViewModel {
 
     public void insertTodo(String id, String date, Todo todo) { repository.insertTodo(id, date, todo);}
 
+    public void updateTodo(String id, String date, Todo todo, int position) {
+        repository.updateTodo(id, date, todo, position);
+    }
+
     public void deleteTodo(String id, String date, Todo todo, int position) {
         repository.deleteTodo(id, date, todo, position);
     }

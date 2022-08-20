@@ -33,7 +33,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoHolder>{
     @Override
     public void onBindViewHolder(@NonNull @NotNull TodoHolder holder, int position) {
         Todo currentTodo = todos.get(position);
-        holder.content.setText(currentTodo.getContent());
+        holder.title.setText(currentTodo.getTitle());
     }
 
     @Override
@@ -52,18 +52,18 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoHolder>{
 
     class TodoHolder extends RecyclerView.ViewHolder {
 
-        private TextView content;
+        private TextView title;
 
         public TodoHolder(View itemView) {
             super(itemView);
-            content = itemView.findViewById(R.id.content);
+            title = itemView.findViewById(R.id.title);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     if (listener != null && position != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(todos.get(position));
+                        listener.onItemClick(todos.get(position), position);
                     }
                 }
             });
@@ -71,7 +71,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoHolder>{
     }
 
     public interface onItemClickListener {
-        void onItemClick(Todo todo);
+        void onItemClick(Todo todo, int position);
     }
 
     public void setOnItemClickListener(onItemClickListener listener) {

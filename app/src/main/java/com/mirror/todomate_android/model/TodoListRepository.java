@@ -42,6 +42,18 @@ public class TodoListRepository {
         String key = myRef.push().getKey();
         todo.setKey(key);
         myRef.child(id).child(date).child(key).setValue(todo);
+        todos.add(todo);
+        allTodos.setValue(todos);
+    }
+
+    public void updateTodo(String id, String date, Todo todo, int position) {
+        Log.d(TAG, id);
+        Log.d(TAG, date);
+        Log.d(TAG, todo.getKey());
+        myRef.child(id).child(date).child(todo.getKey()).setValue(todo);
+        todos.get(position).setTitle(todo.getTitle());
+        todos.get(position).setContent(todo.getContent());
+        allTodos.setValue(todos);
     }
 
     public void deleteTodo(String id, String date, Todo todo, int position) {
