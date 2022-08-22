@@ -1,9 +1,11 @@
 package com.mirror.todomate_android.model;
 
 import android.app.Application;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -16,6 +18,8 @@ import com.mirror.todomate_android.classes.Todo;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +41,7 @@ public class TodoListRepository {
     public LiveData<List<Todo>> getAllTodos() {
         return allTodos;
     }
+
 
     public void insertTodo(String id, String date, Todo todo) {
         String key = myRef.push().getKey();
@@ -81,6 +86,17 @@ public class TodoListRepository {
 
             }
         });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public String getToday() {
+        // 현재 날짜 구하기
+        LocalDate now = LocalDate.now();
+        // 포맷 정의
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        // 포맷 적용
+        String today = now.format(formatter);
+        return today;
     }
 
     public void init() {

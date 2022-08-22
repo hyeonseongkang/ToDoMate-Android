@@ -1,8 +1,10 @@
 package com.mirror.todomate_android.viewmodel;
 
 import android.app.Application;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
@@ -36,5 +38,9 @@ public class TodoListViewModel extends AndroidViewModel {
         repository.getTodos(id, date);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public String getToday() { return repository.getToday();}
+
     public LiveData<List<Todo>> getAllTodos() { return allTodos; }
+
 }

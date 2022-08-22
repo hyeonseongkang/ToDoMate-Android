@@ -5,6 +5,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity{
     String selected_date;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,12 +90,15 @@ public class MainActivity extends AppCompatActivity{
         user = loginViewModel.getUser().getValue();
 
 
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = new Date(binding.calendarView.getDate());
-        binding.today.setText(format.format(date));
-        selected_date = format.format(date);
-        todoListViewModel.getTodos(user.getUid(), format.format(date));
-        Log.d(TAG, format.format(date));
+//        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+//        Date date = new Date(binding.calendarView.getDate());
+//        binding.today.setText(format.format(date));
+//        selected_date = format.format(date);
+//        todoListViewModel.getTodos(user.getUid(), format.format(date));
+        selected_date = todoListViewModel.getToday();
+        Log.d(TAG, selected_date);
+        todoListViewModel.getTodos(user.getUid(), selected_date);
+       // Log.d(TAG, format.format(date));
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
