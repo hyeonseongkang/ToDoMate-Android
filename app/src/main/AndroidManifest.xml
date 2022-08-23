@@ -9,10 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ToDoMateAndroid">
-        <activity android:name=".view.AddEditTodoActivity"></activity>
+        <activity android:name=".view.MainActivity"/>
+        <activity android:name=".view.AddEditTodoActivity" />
         <activity android:name=".view.LoginActivity" />
         <activity
-            android:name=".view.MainActivity"
+            android:name=".CalendarActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
