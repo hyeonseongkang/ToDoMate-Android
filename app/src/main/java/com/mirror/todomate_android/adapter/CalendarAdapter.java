@@ -1,4 +1,4 @@
-package com.mirror.todomate_android;
+package com.mirror.todomate_android.adapter;
 
 import android.graphics.Color;
 import android.os.Build;
@@ -11,39 +11,53 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mirror.todomate_android.CalendarUtils;
+import com.mirror.todomate_android.R;
+import com.mirror.todomate_android.classes.Todo;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.CalendarHolder>{
+public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.CalendarHolder>{
 
-    private final ArrayList<LocalDate> days;
-    private final OnItemListener onItemListener;
+    private ArrayList<LocalDate> days;
+    private onItemClickListener listener;
 
-    public CalendarAdapter(ArrayList<LocalDate> days, OnItemListener onItemListener) {
+    public CalendarAdapter(ArrayList<LocalDate> days) {
         this.days = days;
-        this.onItemListener = onItemListener;
     }
 
-    public class CalendarHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class CalendarHolder extends RecyclerView.ViewHolder{
 
         private final ArrayList<LocalDate> days;
         public final View parentView;
         private final TextView dayOfMonth;
-        private final OnItemListener onItemListener;
 
-        public CalendarHolder( View itemView, OnItemListener onItemListener, ArrayList<LocalDate> days) {
+        public CalendarHolder( View itemView, ArrayList<LocalDate> days) {
             super(itemView);
             parentView = itemView.findViewById(R.id.parentView);;
             dayOfMonth = itemView.findViewById(R.id.cell_day);
-            this.onItemListener = onItemListener;
-            itemView.setOnClickListener(this);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (listener != null && position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(getAdapterPosition(), days.get(getAdapterPosition()));
+                    }
+                }
+            });
+
             this.days = days;
         }
+    }
 
-        @Override
-        public void onClick(View view) {
-            onItemListener.onItemClick(getAdapterPosition(), days.get(getAdapterPosition()));
-        }
+    public interface onItemClickListener {
+        void onItemClick(int position, LocalDate date);
+    }
+
+    public void setOnItemClickListener(CalendarAdapter.onItemClickListener listener) {
+        this.listener = listener;
     }
 
 
@@ -57,7 +71,7 @@ class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.CalendarHolde
             layoutParams.height = (int) (parent.getHeight() * 0.1666666666);
         else
             layoutParams.height = (int) (parent.getHeight());
-        return new CalendarHolder(view, onItemListener, days);
+        return new CalendarHolder(view, days);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -73,7 +87,7 @@ class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.CalendarHolde
                 holder.parentView.setBackgroundColor(Color.LTGRAY);
             }
         }
-       // holder.dayOfMonth.setText(days.get(position));
+
     }
 
     @Override
@@ -81,7 +95,4 @@ class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.CalendarHolde
         return days.size();
     }
 
-    public interface OnItemListener {
-        void onItemClick(int position, LocalDate date);
-    }
 }

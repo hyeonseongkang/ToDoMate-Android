@@ -11,13 +11,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.mirror.todomate_android.adapter.CalendarAdapter;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 import static com.mirror.todomate_android.CalendarUtils.daysInWeekArray;
 import static com.mirror.todomate_android.CalendarUtils.monthYearFromDate;
 
-public class CalendarActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener{
+public class CalendarActivity extends AppCompatActivity {
 
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
@@ -63,17 +65,17 @@ public class CalendarActivity extends AppCompatActivity implements CalendarAdapt
         monthYearText.setText(monthYearFromDate(CalendarUtils.selectedDate));
         ArrayList<LocalDate> days = daysInWeekArray(CalendarUtils.selectedDate);
 
-        CalendarAdapter calendarAdapter = new CalendarAdapter(days, this);
+        CalendarAdapter calendarAdapter = new CalendarAdapter(days);
+        calendarAdapter.setOnItemClickListener(new CalendarAdapter.onItemClickListener() {
+            @Override
+            public void onItemClick(int position, LocalDate date) {
+                CalendarUtils.selectedDate = date;
+                setWeekView();
+            }
+        });
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    @Override
-    public void onItemClick(int position, LocalDate date)
-    {
-        CalendarUtils.selectedDate = date;
-        setWeekView();
-    }
 }
