@@ -1,16 +1,23 @@
 package com.mirror.todomate_android.view;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CalendarView;
 
 import com.mirror.todomate_android.R;
 import com.mirror.todomate_android.databinding.ActivityCalendarBinding;
 import com.mirror.todomate_android.databinding.ActivityMainBinding;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class CalendarActivity extends AppCompatActivity {
 
@@ -45,11 +52,21 @@ public class CalendarActivity extends AppCompatActivity {
 
 
         binding.backButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
 
+                if (date == null || date.equals("")) {
+                    LocalDate now = LocalDate.now();
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    String today = now.format(formatter);
+
+                    date = today;
+                }
+
                 Intent data = new Intent();
                 data.putExtra("date", date);
+                Log.d(TAG, date);
 
                 setResult(RESULT_OK, data);
                 finish();

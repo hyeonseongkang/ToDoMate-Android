@@ -74,11 +74,12 @@ public class TodoListRepository {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 todos.clear();
+                //Log.d(TAG, String.valueOf(snapshot.getValue()));
                 for (DataSnapshot snapshot1: snapshot.getChildren()) {
                     Todo todo = snapshot1.getValue(Todo.class);
                     todos.add(todo);
-                    //Log.d(TAG, todo.getEmail());
-                    //Log.d(TAG, todo.getKey());
+//                    Log.d(TAG, todo.getEmail());
+//                    Log.d(TAG, todo.getKey());
                 }
                 allTodos.setValue(todos);
             }

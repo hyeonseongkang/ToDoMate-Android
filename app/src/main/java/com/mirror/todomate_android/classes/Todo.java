@@ -8,10 +8,11 @@ public class Todo {
     private String content;
     private String hour;
     private String minute;
+    private boolean complete;
 
     public Todo() {}
 
-    public Todo(String key, String title, String email, String date, String content, String hour, String minute) {
+    public Todo(String key, String title, String email, String date, String content, String hour, String minute, boolean complete) {
         this.key = key;
         this.title = title;
         this.email = email;
@@ -19,6 +20,7 @@ public class Todo {
         this.content = content;
         this.hour = hour;
         this.minute = minute;
+        this.complete = complete;
     }
 
     public void setKey(String key) {
@@ -68,4 +70,14 @@ public class Todo {
     public void setMinute(String minute) {
         this.minute = minute;
     }
+
+    public boolean isComplete() {
+        return complete;
+    }
+
+    public void setComplete(boolean complete) {
+        this.complete = complete;
+    }
+
+
 }

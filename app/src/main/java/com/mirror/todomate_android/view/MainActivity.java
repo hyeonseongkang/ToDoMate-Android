@@ -69,7 +69,17 @@ public class MainActivity extends AppCompatActivity{
 
                 editLauncher.launch(intent);
             }
+
         });
+
+        todoAdapter.setOnItemCheckedListener(new TodoAdapter.onItemCheckedListener() {
+            @Override
+            public void onItemChecked(Todo todo, int position) {
+                Log.d(TAG, todo.isComplete() + " !@!@");
+                todoListViewModel.updateTodo(user.getUid(), todo.getDate(), todo, position);
+            }
+        });
+
 
         todoListViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(TodoListViewModel.class);
         todoListViewModel.getAllTodos().observe(this, new Observer<List<Todo>>() {
@@ -157,7 +167,7 @@ public class MainActivity extends AppCompatActivity{
                         String minute = intent.getStringExtra(AddEditTodoActivity.EXTRA_MINUTE);
 
                         // //String key, String title, String email, String date, String content
-                        Todo todo = new Todo(key, title, email, date, content, hour, minute);
+                        Todo todo = new Todo(key, title, email, date, content, hour, minute, false);
 
                         Log.d(TAG, user.getUid());
                         Log.d(TAG, key);
@@ -181,7 +191,7 @@ public class MainActivity extends AppCompatActivity{
                         String minute = intent.getStringExtra(AddEditTodoActivity.EXTRA_MINUTE);
 
                         //String key, String title, String email, String date, String content
-                        todoListViewModel.insertTodo(user.getUid(), date, new Todo(null, title, user.getEmail(), date, content, hour, minute));
+                        todoListViewModel.insertTodo(user.getUid(), date, new Todo(null, title, user.getEmail(), date, content, hour, minute, false));
                     }
                 }
             });
