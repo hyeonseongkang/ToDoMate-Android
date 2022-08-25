@@ -34,6 +34,8 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoHolder>{
     public void onBindViewHolder(@NonNull @NotNull TodoHolder holder, int position) {
         Todo currentTodo = todos.get(position);
         holder.title.setText(currentTodo.getTitle());
+        holder.time.setText(currentTodo.getHour() + ":" + currentTodo .getMinute());
+        holder.content.setText(currentTodo.getContent());
     }
 
     @Override
@@ -53,10 +55,14 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoHolder>{
     class TodoHolder extends RecyclerView.ViewHolder {
 
         private TextView title;
+        private TextView time;
+        private TextView content;
 
         public TodoHolder(View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
+            time = itemView.findViewById(R.id.time);
+            content = itemView.findViewById(R.id.content);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

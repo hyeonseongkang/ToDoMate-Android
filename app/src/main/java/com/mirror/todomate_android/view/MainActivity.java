@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity{
             }
         }).attachToRecyclerView(binding.mainRecyclerView);
 
-        binding.addButton.setOnClickListener(new View.OnClickListener() {
+        binding.addTodoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, AddEditTodoActivity.class);
