@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity{
 
     String selected_date;
 
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +64,9 @@ public class MainActivity extends AppCompatActivity{
                 intent.putExtra(AddEditTodoActivity.EXTRA_DATE, todo.getDate());
                 intent.putExtra(AddEditTodoActivity.EXTRA_TITLE, todo.getTitle());
                 intent.putExtra(AddEditTodoActivity.EXTRA_CONTENT, todo.getContent());
+                intent.putExtra(AddEditTodoActivity.EXTRA_HOUR, todo.getHour());
+                intent.putExtra(AddEditTodoActivity.EXTRA_MINUTE, todo.getMinute());
+
                 editLauncher.launch(intent);
             }
         });
@@ -91,16 +93,10 @@ public class MainActivity extends AppCompatActivity{
         });
 
 
-//        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-//        Date date = new Date(binding.calendarView.getDate());
-//        binding.today.setText(format.format(date));
-//        selected_date = format.format(date);
-//        todoListViewModel.getTodos(user.getUid(), format.format(date));
         selected_date = todoListViewModel.getToday();
         Log.d(TAG, selected_date);
         binding.today.setText(selected_date);
         todoListViewModel.getTodos(user.getUid(), selected_date);
-       // Log.d(TAG, format.format(date));
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -115,24 +111,6 @@ public class MainActivity extends AppCompatActivity{
                 todoListViewModel.deleteTodo(user.getUid(), todo.getDate(), todo, position);
             }
         }).attachToRecyclerView(binding.mainRecyclerView);
-
-//        binding.calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-//            @Override
-//            public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
-//                String year = String.valueOf(i);
-//                String month = String.valueOf(i1 + 1);
-//                String day = String.valueOf(i2);
-//                if (i1 < 10) {
-//                    month = "0" + (i1 + 1);
-//                }
-//
-//                String date = year + "-" + month + "-" + day;
-//                binding.today.setText(date);
-//                todoListViewModel.getTodos(user.getUid(), date);
-//                selected_date = date;
-//                //todoListViewModel.insertTodo(user.getUid(), date, new Todo(null, user.getEmail(), date, "testContent"));
-//            }
-//        });
 
         binding.addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,20 +130,12 @@ public class MainActivity extends AppCompatActivity{
                     if (result.getResultCode() == RESULT_OK) {
                         Intent intent = result.getData();
 
-
                         String date = intent.getStringExtra("date");
-                        Log.d(TAG, date + " yaho");
+                        Log.d(TAG, date );
                         binding.today.setText(date);
                         todoListViewModel.getTodos(user.getUid(), date);
                         selected_date = date;
-
-                        // //String key, String title, String email, String date, String content
-
-                        //todoListViewModel.updateTodo(user.getUid(), date, todo, position);
-
-
                     }
-
                 }
             });
 
@@ -183,18 +153,17 @@ public class MainActivity extends AppCompatActivity{
                         String date = intent.getStringExtra(AddEditTodoActivity.EXTRA_DATE);
                         String title = intent.getStringExtra(AddEditTodoActivity.EXTRA_TITLE);
                         String content = intent.getStringExtra(AddEditTodoActivity.EXTRA_CONTENT);
+                        String hour = intent.getStringExtra(AddEditTodoActivity.EXTRA_HOUR);
+                        String minute = intent.getStringExtra(AddEditTodoActivity.EXTRA_MINUTE);
 
                         // //String key, String title, String email, String date, String content
-                        Todo todo = new Todo(key, title, email, date, content);
+                        Todo todo = new Todo(key, title, email, date, content, hour, minute);
 
                         Log.d(TAG, user.getUid());
                         Log.d(TAG, key);
                         Log.d(TAG, date);
                         todoListViewModel.updateTodo(user.getUid(), date, todo, position);
-
-
                     }
-
                 }
             });
 
@@ -208,12 +177,12 @@ public class MainActivity extends AppCompatActivity{
                         String date = intent.getStringExtra(AddEditTodoActivity.EXTRA_DATE);
                         String title = intent.getStringExtra(AddEditTodoActivity.EXTRA_TITLE);
                         String content = intent.getStringExtra(AddEditTodoActivity.EXTRA_CONTENT);
+                        String hour = intent.getStringExtra(AddEditTodoActivity.EXTRA_HOUR);
+                        String minute = intent.getStringExtra(AddEditTodoActivity.EXTRA_MINUTE);
 
                         //String key, String title, String email, String date, String content
-                        todoListViewModel.insertTodo(user.getUid(), date, new Todo(null, title, user.getEmail(), date, content));
-
+                        todoListViewModel.insertTodo(user.getUid(), date, new Todo(null, title, user.getEmail(), date, content, hour, minute));
                     }
-
                 }
             });
 }

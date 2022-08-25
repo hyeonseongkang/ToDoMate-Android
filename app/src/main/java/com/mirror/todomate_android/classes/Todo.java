@@ -6,15 +6,19 @@ public class Todo {
     private String email;
     private String date;
     private String content;
+    private String hour;
+    private String minute;
 
     public Todo() {}
 
-    public Todo(String key, String title, String email, String date, String content) {
+    public Todo(String key, String title, String email, String date, String content, String hour, String minute) {
         this.key = key;
         this.title = title;
         this.email = email;
         this.date = date;
         this.content = content;
+        this.hour = hour;
+        this.minute = minute;
     }
 
     public void setKey(String key) {
@@ -47,5 +51,21 @@ public class Todo {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getHour() {
+        return hour;
+    }
+
+    public void setHour(String hour) {
+        this.hour = hour;
+    }
+
+    public String getMinute() {
+        return minute;
+    }
+
+    public void setMinute(String minute) {
+        this.minute = minute;
     }
 }

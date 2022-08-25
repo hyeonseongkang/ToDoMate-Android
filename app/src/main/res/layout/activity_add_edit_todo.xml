@@ -16,64 +16,62 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginTop="18dp"
             android:layout_marginLeft="15dp"
+            android:layout_marginTop="18dp"
             android:layout_marginRight="15dp">
 
             <ImageButton
                 android:id="@+id/cancel_button"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:background="@drawable/back"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:background="@drawable/back" />
 
 
             <TextView
                 android:id="@+id/room_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/scd6"
                 android:text="todo 등록 | 수정"
                 android:textColor="#000000"
-                android:textSize="18dp"
-                android:fontFamily="@font/gmm"
-                android:layout_centerInParent="true" />
+                android:textSize="18dp" />
 
             <RelativeLayout
                 android:id="@+id/ok_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/activity_add_edit_todo_ok_button"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true">
+                android:layout_centerVertical="true"
+                android:background="@drawable/activity_main_add_todo_button">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="완료"
+                    android:layout_centerInParent="true"
                     android:fontFamily="@font/gmm"
+                    android:text="완료"
                     android:textColor="#FFFFFF"
-                    android:textSize="15dp"
-                    android:layout_centerInParent="true" />
+                    android:textSize="15dp" />
             </RelativeLayout>
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#000000"
             android:layout_below="@+id/topLayout"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="10dp"
+            android:background="#000000" />
     </LinearLayout>
-
-
 
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/topLayout"
-        android:layout_marginTop="15dp"
         android:layout_marginLeft="15dp"
+        android:layout_marginTop="25dp"
         android:layout_marginRight="15dp">
 
         <LinearLayout
@@ -81,71 +79,98 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="25dp">
+                android:fontFamily="@font/scd5"
+                android:text="Date"
+                android:textColor="#000000"
+                android:textSize="18dp" />
 
-                <TextView
-                    android:id="@+id/date"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/scd4"
-                    android:text="2020-08-21"
-                    android:textColor="#000000"
-                    android:textSize="17dp"
-                    android:background="@null" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_marginTop="25dp"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#CFCECE"/>
-
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="25dp">
-
-                <EditText
-                    android:id="@+id/title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="제목"
-                    android:background="@null" />
-
-            </LinearLayout>
+                android:layout_marginTop="13dp"
+                android:background="@null"
+                android:fontFamily="@font/scd4"
+                android:text="2020-08-21"
+                android:textColor="#000000"
+                android:textSize="17dp" />
 
 
             <LinearLayout
-                android:layout_marginTop="25dp"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#CFCECE"/>
+                android:layout_height="2dp"
+                android:layout_marginTop="8dp"
+                android:background="#CFCECE" />
 
 
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="25dp">
+                android:layout_marginTop="35dp"
+                android:fontFamily="@font/scd5"
+                android:text="Title"
+                android:textColor="#000000"
+                android:textSize="18dp" />
 
-                <EditText
-                    android:id="@+id/content"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:hint="내용"
-                    android:textColor="#000000"
-                    android:lineSpacingExtra="5dp"/>
 
-            </LinearLayout>
+            <EditText
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:background="@null"
+                android:hint="input" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="8dp"
+                android:background="#CFCECE" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35dp"
+                android:fontFamily="@font/scd5"
+                android:text="Details"
+                android:textColor="#000000"
+                android:textSize="18dp" />
+
+            <EditText
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="input"
+                android:lineSpacingExtra="5dp"
+                android:textColor="#000000"
+                android:layout_marginTop="13dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="8dp"
+                android:background="#CFCECE" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35dp"
+                android:fontFamily="@font/scd5"
+                android:text="Time"
+                android:textColor="#000000"
+                android:textSize="18dp" />
+
+
+            <TimePicker
+                android:id="@+id/time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:timePickerMode="spinner" />
 
 
         </LinearLayout>
@@ -155,7 +180,7 @@
         android:id="@+id/progress"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:visibility="gone"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
 
 </RelativeLayout>

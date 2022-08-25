@@ -58,6 +58,8 @@ public class TodoListRepository {
         myRef.child(id).child(date).child(todo.getKey()).setValue(todo);
         todos.get(position).setTitle(todo.getTitle());
         todos.get(position).setContent(todo.getContent());
+        todos.get(position).setHour(todo.getHour());
+        todos.get(position).setMinute(todo.getMinute());
         allTodos.setValue(todos);
     }
 
