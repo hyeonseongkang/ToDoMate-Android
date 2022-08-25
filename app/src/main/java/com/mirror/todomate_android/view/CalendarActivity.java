@@ -13,11 +13,9 @@ import android.widget.CalendarView;
 
 import com.mirror.todomate_android.R;
 import com.mirror.todomate_android.databinding.ActivityCalendarBinding;
-import com.mirror.todomate_android.databinding.ActivityMainBinding;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 public class CalendarActivity extends AppCompatActivity {
 
@@ -33,7 +31,7 @@ public class CalendarActivity extends AppCompatActivity {
         binding = ActivityCalendarBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        overridePendingTransition(R.anim.fadein, R.anim.none);
+        overridePendingTransition(R.anim.fadein_up, R.anim.none);
 
         binding.calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -70,7 +68,7 @@ public class CalendarActivity extends AppCompatActivity {
 
                 setResult(RESULT_OK, data);
                 finish();
-                overridePendingTransition(R.anim.none, R.anim.fadeout);
+                overridePendingTransition(R.anim.none, R.anim.fadeout_up);
             }
         });
 

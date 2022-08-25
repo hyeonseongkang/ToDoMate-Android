@@ -37,6 +37,8 @@ public class AddEditTodoActivity extends AppCompatActivity {
         binding = ActivityAddEditTodoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        overridePendingTransition(R.anim.fadein_left, R.anim.none);
+
         Intent intent = getIntent();
 
         if (intent.hasExtra(EXTRA_KEY)) {
@@ -80,6 +82,7 @@ public class AddEditTodoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+                overridePendingTransition(R.anim.none, R.anim.fadeout_left);
             }
         });
 
@@ -124,7 +127,7 @@ public class AddEditTodoActivity extends AppCompatActivity {
 
                 setResult(RESULT_OK, data);
                 finish();
-
+                overridePendingTransition(R.anim.none, R.anim.fadeout_left);
             }
         });
 

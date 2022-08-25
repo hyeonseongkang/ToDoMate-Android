@@ -48,11 +48,14 @@ public class MainActivity extends AppCompatActivity{
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.mainRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        binding.mainRecyclerView.setHasFixedSize(true);
+        binding.mainTodosRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.mainTodosRecyclerView.setHasFixedSize(true);
+
+        binding.mainFriendsRecyclerview.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        binding.mainFriendsRecyclerview.setHasFixedSize(true);
 
         TodoAdapter todoAdapter = new TodoAdapter();
-        binding.mainRecyclerView.setAdapter(todoAdapter);
+        binding.mainTodosRecyclerView.setAdapter(todoAdapter);
 
         todoAdapter.setOnItemClickListener(new TodoAdapter.onItemClickListener() {
             @Override
@@ -75,7 +78,6 @@ public class MainActivity extends AppCompatActivity{
         todoAdapter.setOnItemCheckedListener(new TodoAdapter.onItemCheckedListener() {
             @Override
             public void onItemChecked(Todo todo, int position) {
-                Log.d(TAG, todo.isComplete() + " !@!@");
                 todoListViewModel.updateTodo(user.getUid(), todo.getDate(), todo, position);
             }
         });
@@ -85,6 +87,7 @@ public class MainActivity extends AppCompatActivity{
         todoListViewModel.getAllTodos().observe(this, new Observer<List<Todo>>() {
             @Override
             public void onChanged(List<Todo> todos) {
+                binding.progressBar.setVisibility(View.GONE);
                 todoAdapter.setTodos(todos);
             }
         });
@@ -106,6 +109,7 @@ public class MainActivity extends AppCompatActivity{
         selected_date = todoListViewModel.getToday();
         Log.d(TAG, selected_date);
         binding.today.setText(selected_date);
+        binding.progressBar.setVisibility(View.VISIBLE);
         todoListViewModel.getTodos(user.getUid(), selected_date);
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -120,7 +124,7 @@ public class MainActivity extends AppCompatActivity{
                 Todo todo = todoAdapter.getTodoAt(viewHolder.getAdapterPosition());
                 todoListViewModel.deleteTodo(user.getUid(), todo.getDate(), todo, position);
             }
-        }).attachToRecyclerView(binding.mainRecyclerView);
+        }).attachToRecyclerView(binding.mainTodosRecyclerView);
 
         binding.addTodoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,6 +132,14 @@ public class MainActivity extends AppCompatActivity{
                 Intent intent = new Intent(MainActivity.this, AddEditTodoActivity.class);
                 intent.putExtra(AddEditTodoActivity.EXTRA_DATE, selected_date);
                 addLauncher.launch(intent);
+            }
+        });
+
+        binding.friendSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, FriendSearchActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -144,6 +156,7 @@ public class MainActivity extends AppCompatActivity{
                         Log.d(TAG, date );
                         binding.today.setText(date);
                         todoListViewModel.getTodos(user.getUid(), date);
+                        binding.progressBar.setVisibility(View.VISIBLE);
                         selected_date = date;
                     }
                 }
