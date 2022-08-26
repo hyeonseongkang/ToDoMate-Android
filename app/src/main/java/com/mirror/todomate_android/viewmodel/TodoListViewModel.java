@@ -24,6 +24,8 @@ public class TodoListViewModel extends AndroidViewModel {
         allTodos = repository.getAllTodos();
     }
 
+    public LiveData<List<Todo>> getAllTodos() { return allTodos; }
+
     public void insertTodo(String id, String date, Todo todo) { repository.insertTodo(id, date, todo);}
 
     public void updateTodo(String id, String date, Todo todo, int position) {
@@ -41,6 +43,6 @@ public class TodoListViewModel extends AndroidViewModel {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public String getToday() { return repository.getToday();}
 
-    public LiveData<List<Todo>> getAllTodos() { return allTodos; }
+
 
 }

@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FriendSearchRepository {
+public class  FriendSearchRepository {
 
     public static final String TAG = "FriendSearchRepository";
 

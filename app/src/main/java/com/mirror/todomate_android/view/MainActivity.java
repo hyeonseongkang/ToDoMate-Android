@@ -19,11 +19,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.todomate_android.adapter.TodoAdapter;
 import com.mirror.todomate_android.classes.Todo;
+import com.mirror.todomate_android.classes.UserProfile;
 import com.mirror.todomate_android.databinding.ActivityMainBinding;
 import com.mirror.todomate_android.viewmodel.LoginViewModel;
+import com.mirror.todomate_android.viewmodel.ProfileViewModel;
 import com.mirror.todomate_android.viewmodel.TodoListViewModel;
 
 import org.jetbrains.annotations.NotNull;
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity{
 
     private TodoListViewModel todoListViewModel;
     private LoginViewModel loginViewModel;
+    private ProfileViewModel profileViewModel;
     private ActivityMainBinding binding;
     private FirebaseUser user;
 
@@ -97,6 +101,21 @@ public class MainActivity extends AppCompatActivity{
         loginViewModel.loginCheck();
         user = loginViewModel.getUser().getValue();
 
+        profileViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ProfileViewModel.class);
+        profileViewModel.getUserProfile().observe(this, new Observer<UserProfile>() {
+            @Override
+            public void onChanged(UserProfile profile) {
+                Log.d(TAG, "Hello!!!");
+                Log.d(TAG, profile.getNickName());
+                Glide.with(MainActivity.this)
+                        .load(profile.getProfileUri())
+                        .into(binding.userProfile);
+                binding.userNickName.setText(profile.getNickName());
+            }
+        });
+
+        profileViewModel.getUser(user.getUid());
+
         binding.today.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,6 +158,16 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, FriendSearchActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                intent.putExtra("uid", user.getUid());
+                intent.putExtra("email", user.getEmail());
                 startActivity(intent);
             }
         });
