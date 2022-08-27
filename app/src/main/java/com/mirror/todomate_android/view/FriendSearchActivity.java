@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.mirror.todomate_android.R;
 import com.mirror.todomate_android.classes.UserProfile;
@@ -44,6 +45,22 @@ public class FriendSearchActivity extends AppCompatActivity {
             }
         });
 
+        profileViewModel.addFriendCheck().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean) {
+                    Toast.makeText(FriendSearchActivity.this, "친구 추가 완료", Toast.LENGTH_SHORT).show();
+                    Intent data = new Intent();
+                    data.putExtra("check", true);
+                    setResult(RESULT_OK, data);
+                    finish();
+                    overridePendingTransition(R.anim.none, R.anim.fadeout_up);
+                } else {
+                    Toast.makeText(FriendSearchActivity.this, "이미 등록된 친구입니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         binding.okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,6 +73,9 @@ public class FriendSearchActivity extends AppCompatActivity {
         binding.closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent data = new Intent();
+                data.putExtra("check", false);
+                setResult(RESULT_OK, data);
                 finish();
                 overridePendingTransition(R.anim.none, R.anim.fadeout_up);
             }

@@ -35,6 +35,7 @@ public class ProfileRepository {
     private MutableLiveData<UserProfile> userProfile;
     private MutableLiveData<List<UserProfile>> allProfiles;
     private MutableLiveData<List<UserProfile>> allFriends;
+    private MutableLiveData<Boolean> addFriendCheck;
     List<UserProfile> userProfiles;
     List<UserProfile> friends;
 
@@ -43,6 +44,7 @@ public class ProfileRepository {
         userProfile = new MutableLiveData<>();
         allProfiles = new MutableLiveData<>();
         allFriends = new MutableLiveData<>();
+        addFriendCheck = new MutableLiveData<>();
         userProfiles = new ArrayList<>();
         friends = new ArrayList<>();
     }
@@ -51,16 +53,24 @@ public class ProfileRepository {
         return userProfile;
     }
 
-    public LiveData<List<UserProfile>> getAllProfiles() { return allProfiles; }
+    public LiveData<List<UserProfile>> getAllProfiles() {
+        return allProfiles;
+    }
 
-    public LiveData<List<UserProfile>> getAllFriends() { return allFriends; }
+    public LiveData<List<UserProfile>> getAllFriends() {
+        return allFriends;
+    }
+
+    public LiveData<Boolean> addFirendCheck() {
+        return addFriendCheck;
+    }
 
     public void getFriends(String uid) {
         myRef.child(uid).child("friends").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 friends.clear();
-                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     UserProfile profile = snapshot1.getValue(UserProfile.class);
                     friends.add(profile);
                 }
@@ -79,7 +89,7 @@ public class ProfileRepository {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 userProfiles.clear();
-                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                     UserProfile profile = snapshot1.getValue(UserProfile.class);
                     userProfiles.add(profile);
                 }
@@ -94,9 +104,39 @@ public class ProfileRepository {
     }
 
     public void addFriend(List<UserProfile> usersProfile, String uid, String userNickName) {
-        for (UserProfile userProfile: usersProfile) {
+        for (UserProfile userProfile : usersProfile) {
             if (userProfile.getNickName().equals(userNickName)) {
-                myRef.child(uid).child("friends").push().setValue(userProfile);
+                myRef.child(uid).child("friends").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                        boolean overlapCheck = true;
+                        for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                            UserProfile profile = snapshot1.getValue(UserProfile.class);
+                            if (profile.getNickName().equals(userNickName))
+                                overlapCheck = false;
+                        }
+
+                        if (overlapCheck) {
+                            myRef.child(uid).child("friends").push().setValue(userProfile)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                            if (task.isSuccessful())
+                                                addFriendCheck.setValue(true);
+                                        }
+                                    });
+                        } else {
+                            addFriendCheck.setValue(false);
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+                    }
+                });
+
             }
         }
     }

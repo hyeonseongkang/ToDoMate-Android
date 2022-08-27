@@ -19,6 +19,7 @@ public class ProfileViewModel extends AndroidViewModel {
     private LiveData<UserProfile> userProfile;
     private LiveData<List<UserProfile>> allProfiles;
     private LiveData<List<UserProfile>> allFriends;
+    private LiveData<Boolean> addFriendCheck;
 
     public ProfileViewModel(@NonNull @NotNull Application application) {
         super(application);
@@ -26,6 +27,7 @@ public class ProfileViewModel extends AndroidViewModel {
         userProfile = repository.getUserProfile();
         allProfiles = repository.getAllProfiles();
         allFriends = repository.getAllFriends();
+        addFriendCheck = repository.addFirendCheck();
     }
 
     public LiveData<UserProfile> getUserProfile() {
@@ -35,6 +37,8 @@ public class ProfileViewModel extends AndroidViewModel {
     public LiveData<List<UserProfile>> getAllProfiles() { return allProfiles;}
 
     public LiveData<List<UserProfile>> getAllFriends() { return allFriends; }
+
+    public LiveData<Boolean> addFriendCheck() { return addFriendCheck; }
 
     public void getFriends(String uid) { repository.getFriends(uid);}
 

@@ -123,9 +123,6 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onChanged(List<UserProfile> userProfiles) {
                 friendAdapter.setFriends(userProfiles);
-//                for (UserProfile userProfile: userProfiles) {
-//                    Log.d(TAG, userProfile.getNickName() + " Hello!!");
-//                }
             }
         });
 
@@ -174,7 +171,8 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, FriendSearchActivity.class);
                 intent.putExtra("uid", user.getUid());
-                startActivity(intent);
+                addFirendLauncher.launch(intent);
+                //startActivity(intent);
             }
         });
 
@@ -189,6 +187,20 @@ public class MainActivity extends AppCompatActivity{
         });
 
     }
+
+    ActivityResultLauncher<Intent> addFirendLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == RESULT_OK) {
+                        Intent intent = result.getData();
+
+                        boolean addFriend = intent.getBooleanExtra("check", false);
+                        if (addFriend)
+                            profileViewModel.getFriends(user.getUid());
+                    }
+                }
+            });
 
     ActivityResultLauncher<Intent> dateLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
