@@ -73,19 +73,20 @@ public class MainActivity extends AppCompatActivity{
         todoAdapter.setOnItemClickListener(new TodoAdapter.onItemClickListener() {
             @Override
             public void onItemClick(Todo todo, int position) {
-                Intent intent = new Intent(MainActivity.this, AddEditTodoActivity.class);
-                intent.putExtra(AddEditTodoActivity.EXTRA_POSITION, position);
-                intent.putExtra(AddEditTodoActivity.EXTRA_KEY, todo.getKey());
-                intent.putExtra(AddEditTodoActivity.EXTRA_EMAIL, todo.getEmail());
-                intent.putExtra(AddEditTodoActivity.EXTRA_DATE, todo.getDate());
-                intent.putExtra(AddEditTodoActivity.EXTRA_TITLE, todo.getTitle());
-                intent.putExtra(AddEditTodoActivity.EXTRA_CONTENT, todo.getContent());
-                intent.putExtra(AddEditTodoActivity.EXTRA_HOUR, todo.getHour());
-                intent.putExtra(AddEditTodoActivity.EXTRA_MINUTE, todo.getMinute());
+                if (todo.getUid().equals(user.getUid())) {
+                    Intent intent = new Intent(MainActivity.this, AddEditTodoActivity.class);
+                    intent.putExtra(AddEditTodoActivity.EXTRA_POSITION, position);
+                    intent.putExtra(AddEditTodoActivity.EXTRA_KEY, todo.getKey());
+                    intent.putExtra(AddEditTodoActivity.EXTRA_EMAIL, todo.getEmail());
+                    intent.putExtra(AddEditTodoActivity.EXTRA_DATE, todo.getDate());
+                    intent.putExtra(AddEditTodoActivity.EXTRA_TITLE, todo.getTitle());
+                    intent.putExtra(AddEditTodoActivity.EXTRA_CONTENT, todo.getContent());
+                    intent.putExtra(AddEditTodoActivity.EXTRA_HOUR, todo.getHour());
+                    intent.putExtra(AddEditTodoActivity.EXTRA_MINUTE, todo.getMinute());
 
-                editLauncher.launch(intent);
+                    editLauncher.launch(intent);
+                }
             }
-
         });
 
         todoAdapter.setOnItemCheckedListener(new TodoAdapter.onItemCheckedListener() {
@@ -98,10 +99,10 @@ public class MainActivity extends AppCompatActivity{
         friendAdapter.setOnItemClickListener(new FriendAdapter.onItemClickListener() {
             @Override
             public void onItemClick(UserProfile userProfile, int position) {
+                binding.progressBar.setVisibility(View.VISIBLE);
                 todoListViewModel.getTodos(userProfile.getUid(), selected_date);
             }
         });
-
 
         todoListViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(TodoListViewModel.class);
         todoListViewModel.getAllTodos().observe(this, new Observer<List<Todo>>() {
@@ -111,9 +112,6 @@ public class MainActivity extends AppCompatActivity{
                 todoAdapter.setTodos(todos);
             }
         });
-
-
-
 
         profileViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ProfileViewModel.class);
         profileViewModel.getUserProfile().observe(this, new Observer<UserProfile>() {
@@ -139,7 +137,7 @@ public class MainActivity extends AppCompatActivity{
         todoListViewModel.getCurrentUser().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                binding.currentUserTodoList.setText(s);
+                binding.currentUserTodoList.setText(s+"님의 Todo List");
             }
         });
 
@@ -176,7 +174,10 @@ public class MainActivity extends AppCompatActivity{
             public void onSwiped(@NonNull @NotNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
                 Todo todo = todoAdapter.getTodoAt(viewHolder.getAdapterPosition());
-                todoListViewModel.deleteTodo(user.getUid(), todo.getDate(), todo, position);
+                if (todo.getUid().equals(user.getUid())) {
+                    todoListViewModel.deleteTodo(user.getUid(), todo.getDate(), todo, position);
+                }
+
             }
         }).attachToRecyclerView(binding.mainTodosRecyclerView);
 

@@ -31,6 +31,7 @@ import com.bumptech.glide.Glide;
 import com.mirror.todomate_android.R;
 import com.mirror.todomate_android.classes.UserProfile;
 import com.mirror.todomate_android.databinding.ActivityProfileBinding;
+import com.mirror.todomate_android.viewmodel.LoginViewModel;
 import com.mirror.todomate_android.viewmodel.ProfileViewModel;
 
 import java.io.IOException;
@@ -41,6 +42,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private ActivityProfileBinding binding;
     private ProfileViewModel profileViewModel;
+    private LoginViewModel loginViewModel;
 
     String uid;
     Uri tempPhotoUri;
@@ -82,6 +84,15 @@ public class ProfileActivity extends AppCompatActivity {
                 binding.userNickName.setText(profile.getNickName());
             }
         });
+
+        loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
+        binding.logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loginViewModel.logout();
+            }
+        });
+
 
         profileViewModel.getUser(uid);
 

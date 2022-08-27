@@ -89,7 +89,8 @@ public class TodoListRepository {
                     @Override
                     public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                         UserProfile userProfile = snapshot.getValue(UserProfile.class);
-                        currentUser.setValue(userProfile.getNickName());
+                        if (userProfile != null)
+                            currentUser.setValue(userProfile.getNickName());
                     }
 
                     @Override
