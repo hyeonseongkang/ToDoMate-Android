@@ -21,6 +21,7 @@ import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseUser;
+import com.mirror.todomate_android.adapter.FriendAdapter;
 import com.mirror.todomate_android.adapter.TodoAdapter;
 import com.mirror.todomate_android.classes.Todo;
 import com.mirror.todomate_android.classes.UserProfile;
@@ -60,6 +61,9 @@ public class MainActivity extends AppCompatActivity{
 
         TodoAdapter todoAdapter = new TodoAdapter();
         binding.mainTodosRecyclerView.setAdapter(todoAdapter);
+
+        FriendAdapter friendAdapter = new FriendAdapter();
+        binding.mainFriendsRecyclerview.setAdapter(friendAdapter);
 
         todoAdapter.setOnItemClickListener(new TodoAdapter.onItemClickListener() {
             @Override
@@ -114,6 +118,18 @@ public class MainActivity extends AppCompatActivity{
 
         profileViewModel.getUser(user.getUid());
         binding.userNickName.setText(user.getEmail());
+
+        profileViewModel.getAllFriends().observe(this, new Observer<List<UserProfile>>() {
+            @Override
+            public void onChanged(List<UserProfile> userProfiles) {
+                friendAdapter.setFriends(userProfiles);
+//                for (UserProfile userProfile: userProfiles) {
+//                    Log.d(TAG, userProfile.getNickName() + " Hello!!");
+//                }
+            }
+        });
+
+        profileViewModel.getFriends(user.getUid());
 
         binding.today.setOnClickListener(new View.OnClickListener() {
             @Override

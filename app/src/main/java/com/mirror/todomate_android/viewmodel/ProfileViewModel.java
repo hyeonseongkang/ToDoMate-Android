@@ -18,12 +18,14 @@ public class ProfileViewModel extends AndroidViewModel {
     private ProfileRepository repository;
     private LiveData<UserProfile> userProfile;
     private LiveData<List<UserProfile>> allProfiles;
+    private LiveData<List<UserProfile>> allFriends;
 
     public ProfileViewModel(@NonNull @NotNull Application application) {
         super(application);
         repository = new ProfileRepository(application);
         userProfile = repository.getUserProfile();
         allProfiles = repository.getAllProfiles();
+        allFriends = repository.getAllFriends();
     }
 
     public LiveData<UserProfile> getUserProfile() {
@@ -31,6 +33,10 @@ public class ProfileViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<UserProfile>> getAllProfiles() { return allProfiles;}
+
+    public LiveData<List<UserProfile>> getAllFriends() { return allFriends; }
+
+    public void getFriends(String uid) { repository.getFriends(uid);}
 
     public void getUser(String uid) {
         repository.getUser(uid);

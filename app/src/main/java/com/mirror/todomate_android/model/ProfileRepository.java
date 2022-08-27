@@ -34,13 +34,17 @@ public class ProfileRepository {
     private DatabaseReference myRef;
     private MutableLiveData<UserProfile> userProfile;
     private MutableLiveData<List<UserProfile>> allProfiles;
+    private MutableLiveData<List<UserProfile>> allFriends;
     List<UserProfile> userProfiles;
+    List<UserProfile> friends;
 
     public ProfileRepository(Application application) {
         myRef = FirebaseDatabase.getInstance().getReference("profiles");
         userProfile = new MutableLiveData<>();
         allProfiles = new MutableLiveData<>();
+        allFriends = new MutableLiveData<>();
         userProfiles = new ArrayList<>();
+        friends = new ArrayList<>();
     }
 
     public LiveData<UserProfile> getUserProfile() {
@@ -48,6 +52,27 @@ public class ProfileRepository {
     }
 
     public LiveData<List<UserProfile>> getAllProfiles() { return allProfiles; }
+
+    public LiveData<List<UserProfile>> getAllFriends() { return allFriends; }
+
+    public void getFriends(String uid) {
+        myRef.child(uid).child("friends").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                friends.clear();
+                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    UserProfile profile = snapshot1.getValue(UserProfile.class);
+                    friends.add(profile);
+                }
+                allFriends.setValue(friends);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
 
     public void getUsersProfile() {
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
