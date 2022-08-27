@@ -11,20 +11,26 @@ import com.mirror.todomate_android.model.ProfileRepository;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class ProfileViewModel extends AndroidViewModel {
 
     private ProfileRepository repository;
     private LiveData<UserProfile> userProfile;
+    private LiveData<List<UserProfile>> allProfiles;
 
     public ProfileViewModel(@NonNull @NotNull Application application) {
         super(application);
         repository = new ProfileRepository(application);
         userProfile = repository.getUserProfile();
+        allProfiles = repository.getAllProfiles();
     }
 
     public LiveData<UserProfile> getUserProfile() {
         return userProfile;
     }
+
+    public LiveData<List<UserProfile>> getAllProfiles() { return allProfiles;}
 
     public void getUser(String uid) {
         repository.getUser(uid);
@@ -33,4 +39,6 @@ public class ProfileViewModel extends AndroidViewModel {
     public void setUser(UserProfile profile) {
         repository.setUser(profile);
     }
+
+
 }

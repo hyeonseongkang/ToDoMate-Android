@@ -23,20 +23,48 @@ import com.mirror.todomate_android.classes.UserProfile;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProfileRepository {
 
     public static final String TAG = "ProfileRepository";
 
     private DatabaseReference myRef;
     private MutableLiveData<UserProfile> userProfile;
+    private MutableLiveData<List<UserProfile>> allProfiles;
+    List<UserProfile> userProfiles;
 
     public ProfileRepository(Application application) {
         myRef = FirebaseDatabase.getInstance().getReference("profiles");
         userProfile = new MutableLiveData<>();
+        allProfiles = new MutableLiveData<>();
+        userProfiles = new ArrayList<>();
     }
 
     public LiveData<UserProfile> getUserProfile() {
         return userProfile;
+    }
+
+    public LiveData<List<UserProfile>> getAllProfiles() { return allProfiles; }
+
+    public void getProfiles() {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                userProfiles.clear();
+                for (DataSnapshot snapshot1: snapshot.getChildren()) {
+                    UserProfile profile = snapshot1.getValue(UserProfile.class);
+                    userProfiles.add(profile);
+                }
+                allProfiles.setValue(userProfiles);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
     }
 
     public void getUser(String uid) {
