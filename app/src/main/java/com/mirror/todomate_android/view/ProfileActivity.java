@@ -67,6 +67,8 @@ public class ProfileActivity extends AppCompatActivity {
         uid = intent.getStringExtra("uid");
         userEmail = intent.getStringExtra("email");
 
+        binding.userEmail.setText(userEmail);
+
         profileViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ProfileViewModel.class);
         profileViewModel.getUserProfile().observe(this, new Observer<UserProfile>() {
             @Override

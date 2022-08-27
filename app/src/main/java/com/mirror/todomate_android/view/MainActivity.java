@@ -105,8 +105,6 @@ public class MainActivity extends AppCompatActivity{
         profileViewModel.getUserProfile().observe(this, new Observer<UserProfile>() {
             @Override
             public void onChanged(UserProfile profile) {
-                Log.d(TAG, "Hello!!!");
-                Log.d(TAG, profile.getNickName());
                 Glide.with(MainActivity.this)
                         .load(profile.getProfileUri())
                         .into(binding.userProfile);
@@ -115,6 +113,7 @@ public class MainActivity extends AppCompatActivity{
         });
 
         profileViewModel.getUser(user.getUid());
+        binding.userNickName.setText(user.getEmail());
 
         binding.today.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,6 +157,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, FriendSearchActivity.class);
+                intent.putExtra("uid", user.getUid());
                 startActivity(intent);
             }
         });

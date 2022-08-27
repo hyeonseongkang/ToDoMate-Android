@@ -74,7 +74,7 @@
                     android:textSize="15dp"
                     android:layout_marginLeft="5dp"
                     android:fontFamily="@font/scd4"
-                    android:text="gt9697@naver.com"
+                    android:text=""
                     android:textColor="#000000"
                     android:maxLines="1"
                     android:ellipsize="end"/>

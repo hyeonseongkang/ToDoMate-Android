@@ -40,5 +40,9 @@ public class ProfileViewModel extends AndroidViewModel {
         repository.setUser(profile);
     }
 
+    public void getUsersProfile() { repository.getUsersProfile();}
+
+    public void addFriend(List<UserProfile> usersProfile, String uid, String userNickName) { repository.addFriend(usersProfile, uid, userNickName);}
+
 
 }

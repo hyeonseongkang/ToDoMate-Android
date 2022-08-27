@@ -1,6 +1,7 @@
 package com.mirror.todomate_android.model;
 
 import android.app.Application;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -15,6 +16,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mirror.todomate_android.classes.Todo;
 import com.mirror.todomate_android.classes.User;
+import com.mirror.todomate_android.view.LoginActivity;
+import com.mirror.todomate_android.view.MainActivity;
 
 import org.jetbrains.annotations.NotNull;
 

@@ -2,6 +2,7 @@ package com.mirror.todomate_android.model;
 
 import android.app.Application;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -48,7 +49,7 @@ public class ProfileRepository {
 
     public LiveData<List<UserProfile>> getAllProfiles() { return allProfiles; }
 
-    public void getProfiles() {
+    public void getUsersProfile() {
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -67,12 +68,21 @@ public class ProfileRepository {
         });
     }
 
+    public void addFriend(List<UserProfile> usersProfile, String uid, String userNickName) {
+        for (UserProfile userProfile: usersProfile) {
+            if (userProfile.getNickName().equals(userNickName)) {
+                myRef.child(uid).child("friends").push().setValue(userProfile);
+            }
+        }
+    }
+
     public void getUser(String uid) {
         myRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 UserProfile profile = snapshot.getValue(UserProfile.class);
-                userProfile.setValue(profile);
+                if (profile != null)
+                    userProfile.setValue(profile);
             }
 
             @Override
