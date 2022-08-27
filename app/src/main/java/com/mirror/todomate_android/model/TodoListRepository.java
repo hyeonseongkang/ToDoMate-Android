@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mirror.todomate_android.classes.Todo;
+import com.mirror.todomate_android.classes.UserProfile;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -29,12 +30,14 @@ public class TodoListRepository {
 
     private DatabaseReference myRef;
     private MutableLiveData<List<Todo>> allTodos;
+    private MutableLiveData<String> currentUser;
     private List<Todo> todos;
 
     public TodoListRepository(Application application) {
         myRef = FirebaseDatabase.getInstance().getReference("todos");
         todos = new ArrayList<>();
         allTodos = new MutableLiveData<>();
+        currentUser = new MutableLiveData<>();
        // init();
     }
 
@@ -42,6 +45,7 @@ public class TodoListRepository {
         return allTodos;
     }
 
+    public LiveData<String> getCurrentUser() { return currentUser; }
 
     public void insertTodo(String id, String date, Todo todo) {
         String key = myRef.push().getKey();
@@ -78,10 +82,24 @@ public class TodoListRepository {
                 for (DataSnapshot snapshot1: snapshot.getChildren()) {
                     Todo todo = snapshot1.getValue(Todo.class);
                     todos.add(todo);
-//                    Log.d(TAG, todo.getEmail());
-//                    Log.d(TAG, todo.getKey());
                 }
+
+                DatabaseReference profilesRef = FirebaseDatabase.getInstance().getReference("profiles");
+                profilesRef.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                        UserProfile userProfile = snapshot.getValue(UserProfile.class);
+                        currentUser.setValue(userProfile.getNickName());
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+                    }
+                });
+
                 allTodos.setValue(todos);
+
             }
 
             @Override

@@ -32,14 +32,18 @@ public class LoginRepository {
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private MutableLiveData<FirebaseUser> userData;
+    private MutableLiveData<Boolean> loginValid;
 
     public LoginRepository(Application application) {
         this.application = application;
         mAuth = FirebaseAuth.getInstance();
         userData = new MutableLiveData<>();
+        loginValid = new MutableLiveData<>();
     }
 
     public LiveData<FirebaseUser> getUser() {return userData;}
+
+    public LiveData<Boolean> getLoginValid() { return loginValid;}
 
     public void login(User user) {
         mAuth.signInWithEmailAndPassword(user.getEmail(), user.getPassword())
@@ -51,11 +55,13 @@ public class LoginRepository {
                             mUser = mAuth.getCurrentUser();
                             Log.d(TAG, "로그인 성공");
                             Toast.makeText(application, "로그인 성공", Toast.LENGTH_SHORT).show();
+                            loginValid.setValue(true);
                         } else {
                             // 로그인 실패
                             //Toast.makeText(application, "fail", Toast.LENGTH_SHORT).show();
                             Log.d(TAG, "로그인 실패");
                             Toast.makeText(application, "로그인 실패", Toast.LENGTH_SHORT).show();
+                            loginValid.setValue(false);
                         }
                     }
                 });
@@ -88,9 +94,11 @@ public class LoginRepository {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             userData.setValue(currentUser);
+            loginValid.setValue(true);
             Log.d(TAG, "로그인 돼있음");
         } else {
             Log.d(TAG, "로그인 안돼있음");
+            loginValid.setValue(false);
         }
     }
 }

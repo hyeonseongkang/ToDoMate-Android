@@ -26,10 +26,10 @@
 
         <activity android:name=".view.AddEditTodoActivity" />
 
-        <activity android:name=".view.LoginActivity" />
+        <activity android:name=".view.MainActivity" />
 
         <activity
-            android:name=".view.MainActivity"
+            android:name=".view.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

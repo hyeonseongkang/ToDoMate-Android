@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,11 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoHolder>{
     private List<Todo> todos = new ArrayList<>();
     private onItemClickListener listener;
     private onItemCheckedListener checkedListener;
+    private String myUid;
+
+    public TodoAdapter(String myUid) {
+        this.myUid = myUid;
+    }
 
     @NonNull
     @NotNull
@@ -38,18 +44,26 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoHolder>{
     @Override
     public void onBindViewHolder(@NonNull @NotNull TodoHolder holder, int position) {
         Todo currentTodo = todos.get(position);
-        holder.complete.setOnCheckedChangeListener(null);
+        holder.todo_complete_view.setVisibility(View.GONE);
+
+        if (myUid.equals(currentTodo.getUid())) {
+            holder.todo_complete_view.setVisibility(View.VISIBLE);
+            holder.complete.setOnCheckedChangeListener(null);
+            holder.complete.setChecked(currentTodo.isComplete());
+            holder.complete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    currentTodo.setComplete(b);
+                }
+            });
+        }
+
         holder.title.setText(currentTodo.getTitle());
         holder.time.setText(currentTodo.getHour() + ":" + currentTodo .getMinute());
         holder.content.setText(currentTodo.getContent());
-        holder.complete.setChecked(currentTodo.isComplete());
 
-        holder.complete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                currentTodo.setComplete(b);
-            }
-        });
+
+
     }
 
     @Override
@@ -72,6 +86,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoHolder>{
         private TextView time;
         private TextView content;
         private CheckBox complete;
+        private LinearLayout todo_complete_view;
 
         public TodoHolder(View itemView) {
             super(itemView);
@@ -79,6 +94,7 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoHolder>{
             time = itemView.findViewById(R.id.time);
             content = itemView.findViewById(R.id.content);
             complete = itemView.findViewById(R.id.complete);
+            todo_complete_view = itemView.findViewById(R.id.todo_complete_view);
 
 
             complete.setOnClickListener(new View.OnClickListener() {

@@ -1,6 +1,7 @@
 package com.mirror.todomate_android.classes;
 
 public class Todo {
+    private String uid;
     private String key;
     private String title;
     private String email;
@@ -10,9 +11,11 @@ public class Todo {
     private String minute;
     private boolean complete;
 
+
     public Todo() {}
 
-    public Todo(String key, String title, String email, String date, String content, String hour, String minute, boolean complete) {
+    public Todo(String uid, String key, String title, String email, String date, String content, String hour, String minute, boolean complete) {
+        this.uid = uid;
         this.key = key;
         this.title = title;
         this.email = email;
@@ -21,6 +24,14 @@ public class Todo {
         this.hour = hour;
         this.minute = minute;
         this.complete = complete;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public void setKey(String key) {

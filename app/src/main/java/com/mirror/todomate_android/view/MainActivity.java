@@ -21,6 +21,7 @@ import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseUser;
+import com.mirror.todomate_android.R;
 import com.mirror.todomate_android.adapter.FriendAdapter;
 import com.mirror.todomate_android.adapter.TodoAdapter;
 import com.mirror.todomate_android.classes.Todo;
@@ -53,13 +54,17 @@ public class MainActivity extends AppCompatActivity{
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
+        loginViewModel.loginCheck();
+        user = loginViewModel.getUser().getValue();
+
         binding.mainTodosRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.mainTodosRecyclerView.setHasFixedSize(true);
 
         binding.mainFriendsRecyclerview.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         binding.mainFriendsRecyclerview.setHasFixedSize(true);
 
-        TodoAdapter todoAdapter = new TodoAdapter();
+        TodoAdapter todoAdapter = new TodoAdapter(user.getUid());
         binding.mainTodosRecyclerView.setAdapter(todoAdapter);
 
         FriendAdapter friendAdapter = new FriendAdapter();
@@ -90,6 +95,13 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
+        friendAdapter.setOnItemClickListener(new FriendAdapter.onItemClickListener() {
+            @Override
+            public void onItemClick(UserProfile userProfile, int position) {
+                todoListViewModel.getTodos(userProfile.getUid(), selected_date);
+            }
+        });
+
 
         todoListViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(TodoListViewModel.class);
         todoListViewModel.getAllTodos().observe(this, new Observer<List<Todo>>() {
@@ -101,23 +113,35 @@ public class MainActivity extends AppCompatActivity{
         });
 
 
-        loginViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(LoginViewModel.class);
-        loginViewModel.loginCheck();
-        user = loginViewModel.getUser().getValue();
+
 
         profileViewModel = new ViewModelProvider(this, new ViewModelProvider.AndroidViewModelFactory(getApplication())).get(ProfileViewModel.class);
         profileViewModel.getUserProfile().observe(this, new Observer<UserProfile>() {
             @Override
             public void onChanged(UserProfile profile) {
-                Glide.with(MainActivity.this)
-                        .load(profile.getProfileUri())
-                        .into(binding.userProfile);
-                binding.userNickName.setText(profile.getNickName());
+                if (profile != null) {
+                    Glide.with(MainActivity.this)
+                            .load(profile.getProfileUri())
+                            .into(binding.userProfile);
+                    binding.userNickName.setText(profile.getNickName());
+                } else {
+                    Glide.with(MainActivity.this)
+                            .load(R.drawable.basic_profile)
+                            .into(binding.userProfile);
+                    binding.userNickName.setText(user.getEmail());
+                }
+
             }
         });
 
         profileViewModel.getUser(user.getUid());
-        binding.userNickName.setText(user.getEmail());
+
+        todoListViewModel.getCurrentUser().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                binding.currentUserTodoList.setText(s);
+            }
+        });
 
         profileViewModel.getAllFriends().observe(this, new Observer<List<UserProfile>>() {
             @Override
@@ -138,7 +162,6 @@ public class MainActivity extends AppCompatActivity{
 
 
         selected_date = todoListViewModel.getToday();
-        Log.d(TAG, selected_date);
         binding.today.setText(selected_date);
         binding.progressBar.setVisibility(View.VISIBLE);
         todoListViewModel.getTodos(user.getUid(), selected_date);
@@ -237,7 +260,7 @@ public class MainActivity extends AppCompatActivity{
                         String minute = intent.getStringExtra(AddEditTodoActivity.EXTRA_MINUTE);
 
                         // //String key, String title, String email, String date, String content
-                        Todo todo = new Todo(key, title, email, date, content, hour, minute, false);
+                        Todo todo = new Todo(user.getUid(), key, title, email, date, content, hour, minute, false);
 
                         Log.d(TAG, user.getUid());
                         Log.d(TAG, key);
@@ -261,7 +284,7 @@ public class MainActivity extends AppCompatActivity{
                         String minute = intent.getStringExtra(AddEditTodoActivity.EXTRA_MINUTE);
 
                         //String key, String title, String email, String date, String content
-                        todoListViewModel.insertTodo(user.getUid(), date, new Todo(null, title, user.getEmail(), date, content, hour, minute, false));
+                        todoListViewModel.insertTodo(user.getUid(), date, new Todo(user.getUid(), null, title, user.getEmail(), date, content, hour, minute, false));
                     }
                 }
             });

@@ -17,14 +17,18 @@ import java.util.List;
 public class LoginViewModel extends AndroidViewModel {
     private LoginRepository repository;
     private LiveData<FirebaseUser> userData;
+    private LiveData<Boolean> loginValid;
 
     public LoginViewModel(@NonNull Application application) {
         super(application);
         repository = new LoginRepository(application);
         userData = repository.getUser();
+        loginValid = repository.getLoginValid();
     }
 
     public LiveData<FirebaseUser> getUser() { return userData; }
+
+    public LiveData<Boolean> getLoginValid() { return loginValid; }
 
     public void login(User user) {
         repository.login(user);

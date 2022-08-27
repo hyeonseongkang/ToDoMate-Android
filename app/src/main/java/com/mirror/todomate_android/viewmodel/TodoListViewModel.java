@@ -17,14 +17,18 @@ public class TodoListViewModel extends AndroidViewModel {
 
     private TodoListRepository repository;
     private LiveData<List<Todo>> allTodos;
+    private LiveData<String> currentUser;
 
     public TodoListViewModel(@NonNull Application application) {
         super(application);
         repository = new TodoListRepository(application);
         allTodos = repository.getAllTodos();
+        currentUser = repository.getCurrentUser();
     }
 
     public LiveData<List<Todo>> getAllTodos() { return allTodos; }
+
+    public LiveData<String> getCurrentUser() { return currentUser; }
 
     public void insertTodo(String id, String date, Todo todo) { repository.insertTodo(id, date, todo);}
 

@@ -66,7 +66,7 @@
                 android:id="@+id/user_profile"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/basic_profile"/>
+               />
 
             <TextView
                 android:id="@+id/user_nick_name"
@@ -122,7 +122,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/user_name"
+        android:id="@+id/current_user_todo_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15dp"
@@ -136,7 +136,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/user_name">
+        android:layout_below="@+id/current_user_todo_list">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/main_todos_recyclerView"

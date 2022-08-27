@@ -39,6 +39,7 @@
                     android:textSize="20dp" />
 
                 <LinearLayout
+                    android:id="@+id/todo_complete_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
