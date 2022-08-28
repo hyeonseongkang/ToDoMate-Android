@@ -120,21 +120,4 @@ public class TodoListRepository {
         String today = now.format(formatter);
         return today;
     }
-
-    public void init() {
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                for (DataSnapshot snapshot1: snapshot.getChildren()) {
-                    todos.add(snapshot1.getValue(Todo.class));
-                }
-                allTodos.setValue(todos);
-            }
-
-            @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
-
-            }
-        });
-    }
 }

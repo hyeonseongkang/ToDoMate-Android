@@ -65,6 +65,7 @@ public class ProfileRepository {
         return addFriendCheck;
     }
 
+    // 친구 목록을 가져오는 메서드
     public void getFriends(String uid) {
         myRef.child(uid).child("friends").addValueEventListener(new ValueEventListener() {
             @Override
@@ -84,6 +85,7 @@ public class ProfileRepository {
         });
     }
 
+    // 모든 User의 Profile을 가져오는 메서드
     public void getUsersProfile() {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -103,9 +105,14 @@ public class ProfileRepository {
         });
     }
 
+    // 친구 추가 메서드
     public void addFriend(List<UserProfile> usersProfile, String uid, String userNickName) {
         for (UserProfile userProfile : usersProfile) {
+
+            // user목록에 인자 값으로 넘어오는 user가 있다면
             if (userProfile.getNickName().equals(userNickName)) {
+
+                // 친구가 이미 되어 있는지 중복 체크
                 myRef.child(uid).child("friends").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -116,6 +123,7 @@ public class ProfileRepository {
                                 overlapCheck = false;
                         }
 
+                        // 중복이 아니라면 친구 추가
                         if (overlapCheck) {
                             myRef.child(uid).child("friends").push().setValue(userProfile)
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -141,6 +149,7 @@ public class ProfileRepository {
         }
     }
 
+    // user profile 가져오는 메서드
     public void getUser(String uid) {
         myRef.child(uid).addValueEventListener(new ValueEventListener() {
             @Override
@@ -157,6 +166,7 @@ public class ProfileRepository {
         });
     }
 
+    // user profile 등록 메서드
     public void setUser(UserProfile profile) {
         String uid = profile.getUid();
         StorageReference storage = FirebaseStorage.getInstance().getReference().child("profiles/" + uid + ".jpg");

@@ -75,8 +75,6 @@ public class ProfileActivity extends AppCompatActivity {
         profileViewModel.getUserProfile().observe(this, new Observer<UserProfile>() {
             @Override
             public void onChanged(UserProfile profile) {
-                Log.d(TAG, "Hello!!!");
-                Log.d(TAG, profile.getNickName());
                 Glide.with(ProfileActivity.this)
                         .load(profile.getProfileUri())
                         .into(binding.userProfile);

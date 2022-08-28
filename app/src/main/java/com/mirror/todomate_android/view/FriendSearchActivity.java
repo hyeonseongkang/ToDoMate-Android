@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
@@ -41,6 +42,7 @@ public class FriendSearchActivity extends AppCompatActivity {
         profileViewModel.getAllProfiles().observe(this, new Observer<List<UserProfile>>() {
             @Override
             public void onChanged(List<UserProfile> userProfiles) {
+                // 값 변경이 감지 되면 친구 추가 진행 결과는 profileViewModel.addFriendCheck().observe()에서 결과 값 변경 감지
                 profileViewModel.addFriend(userProfiles, uid, userNickName);
             }
         });
@@ -65,7 +67,10 @@ public class FriendSearchActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 userNickName = binding.userNickName.getText().toString();
-                profileViewModel.getUsersProfile();
+
+                // userNickName이 비어있지 않다면 모든 프로필을 가져온 뒤 profileViewModel.getAllProfiles().observe가 값이 변경 된 걸 감지한 뒤 친구 추가 진행
+                if (!TextUtils.isEmpty(userNickName))
+                    profileViewModel.getUsersProfile();
             }
         });
 

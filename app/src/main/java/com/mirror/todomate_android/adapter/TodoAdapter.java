@@ -62,8 +62,6 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoHolder>{
         holder.time.setText(currentTodo.getHour() + ":" + currentTodo .getMinute());
         holder.content.setText(currentTodo.getContent());
 
-
-
     }
 
     @Override

@@ -69,15 +69,6 @@ public class AddEditTodoActivity extends AppCompatActivity {
             binding.date.setText(intent.getStringExtra(EXTRA_DATE));
         }
 
-//        binding.time.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-//            @Override
-//            public void onTimeChanged(TimePicker timePicker, int i, int i1) {
-//                hour = String.valueOf(i);
-//                minute = String.valueOf(i1);
-//                Log.d(TAG, hour + " !@ " + minute);
-//            }
-//        });
-
         binding.cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

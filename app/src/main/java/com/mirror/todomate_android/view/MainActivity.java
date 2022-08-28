@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity{
         FriendAdapter friendAdapter = new FriendAdapter();
         binding.mainFriendsRecyclerview.setAdapter(friendAdapter);
 
+        // Item Click -> Edit
         todoAdapter.setOnItemClickListener(new TodoAdapter.onItemClickListener() {
             @Override
             public void onItemClick(Todo todo, int position) {
@@ -89,6 +90,7 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
+        // Complete Check Click
         todoAdapter.setOnItemCheckedListener(new TodoAdapter.onItemCheckedListener() {
             @Override
             public void onItemChecked(Todo todo, int position) {
@@ -136,8 +138,8 @@ public class MainActivity extends AppCompatActivity{
 
         todoListViewModel.getCurrentUser().observe(this, new Observer<String>() {
             @Override
-            public void onChanged(String s) {
-                binding.currentUserTodoList.setText(s+"님의 Todo List");
+            public void onChanged(String userName) {
+                binding.currentUserTodoList.setText(userName+"님의 Todo List");
             }
         });
 
@@ -158,13 +160,14 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-
+        // 현재 날짜 가져온 뒤 todo list 가져옴
         selected_date = todoListViewModel.getToday();
         binding.today.setText(selected_date);
         binding.progressBar.setVisibility(View.VISIBLE);
         todoListViewModel.getTodos(user.getUid(), selected_date);
 
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        // mainTodoRecyclerView Swipe 동작
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(@NonNull @NotNull RecyclerView recyclerView, @NonNull @NotNull RecyclerView.ViewHolder viewHolder, @NonNull @NotNull RecyclerView.ViewHolder target) {
                 return false;

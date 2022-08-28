@@ -45,6 +45,10 @@ public class LoginRepository {
 
     public LiveData<Boolean> getLoginValid() { return loginValid;}
 
+    /*
+    로그인 메서드
+    user를 인자로 받아 검사한 뒤 로그인이 성공 했다면 FirebaseUser에 값을 넣어주고 Boolean 값의 LiveData에 True 값을 넣어주어 LoginActivity에서 사용할 수 있도록 함
+     */
     public void login(User user) {
         mAuth.signInWithEmailAndPassword(user.getEmail(), user.getPassword())
                 .addOnCompleteListener(application.getMainExecutor() , new OnCompleteListener<AuthResult>() {
@@ -67,6 +71,10 @@ public class LoginRepository {
                 });
     }
 
+    /*
+    회원가입 메서드
+    user를 인자로 받아 생성한 뒤 성공 했다면 FirebaseUser에 값을 넣어주고 Boolean 값의 LiveData에 True 값을 넣어주어 LoginActivity에서 사용할 수 있도록 함
+     */
     public void register(User user) {
         mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
                 .addOnCompleteListener(application.getMainExecutor(), new OnCompleteListener<AuthResult>() {
@@ -95,9 +103,7 @@ public class LoginRepository {
         if (currentUser != null) {
             userData.setValue(currentUser);
             loginValid.setValue(true);
-            Log.d(TAG, "로그인 돼있음");
         } else {
-            Log.d(TAG, "로그인 안돼있음");
             loginValid.setValue(false);
         }
     }
