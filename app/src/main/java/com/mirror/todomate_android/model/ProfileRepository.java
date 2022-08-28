@@ -66,7 +66,7 @@ public class ProfileRepository {
     }
 
     public void getFriends(String uid) {
-        myRef.child(uid).child("friends").addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.child(uid).child("friends").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 friends.clear();
@@ -85,7 +85,7 @@ public class ProfileRepository {
     }
 
     public void getUsersProfile() {
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 userProfiles.clear();
@@ -142,7 +142,7 @@ public class ProfileRepository {
     }
 
     public void getUser(String uid) {
-        myRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.child(uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 UserProfile profile = snapshot.getValue(UserProfile.class);
