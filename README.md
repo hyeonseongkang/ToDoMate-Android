@@ -1,7 +1,10 @@
 # ToDoMate-Android
 
 ## 프로젝트 소개
-날짜 별로 todo list를 작성하고 친구 추가를 통하여 친구와 todo list 공유할 수 있는 앱
+날짜 별로 todo list를 작성하고 친구 추가를 통하여 친구와 todo list 공유할 수 있는 앱 
+
+## 프로젝트 기간
+(2022.08.12 ~ 2022.08.28)
 
 ## 기능 소개
 | 로그인 및 회원 가입| profile 등록 | todo 등록 |
@@ -38,4 +41,3 @@
 
 ## 새롭게 알게 된 점
 - MVVM 모델을 적용해 Model, View, ViewModel 간의 의존성을 없애 각 역할에만 집중할 수 있다 보니 유지 보수 측면에서 매우 좋음, 기존 한 Activity에 모든 코드를 집어넣었을 때와 MVVM 모델을 적용했을 때를 비교해보면 기존에는 한 Acitivity에 view에 관한 코드 model(repository: back-end)에 관한 코드가 전부 합쳐져 의존성을 띄우다 보니 한 부분에서 이상이 생기면 view와 model에 관한 코드를 같이 고쳐야 할 경우가 있었으며 코드의 가독성도 매우 안 좋았음 하지만 mvvm 모델을 적용하니 view에 관한 코드는 view에 model에 관한 코드는 model에 있고 viewmodel과 observe를 통해 서로 간의 의존성을 없애니 model 부분에 이상이 생기면 model의 잘못된 코드 부분만 고치면 되니 유지 보수가 매우 편함 또한 각 역할을 나눴다 보니 코드의 가독성도 매우 높아졌음 
-
